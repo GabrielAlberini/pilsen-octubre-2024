@@ -2,8 +2,8 @@
 import { useState } from "react";
 import { useUser } from "../context/UserContext.jsx";
 import { useNavigate } from "react-router-dom";
-import { db } from "../firebase"; // Importar la configuración de Firebase
-import { collection, addDoc } from "firebase/firestore"; // Importar métodos necesarios
+// import { db } from "../firebase"; // Importar la configuración de Firebase
+// import { collection, addDoc } from "firebase/firestore"; // Importar métodos necesarios
 
 const MainView = () => {
   const [day, setDay] = useState("");
@@ -32,19 +32,21 @@ const MainView = () => {
       registrationDate: registrationDate.toISOString(), // Guardar fecha de registro
     });
 
-    try {
-      // Guardar en Firestore
-      await addDoc(collection(db, "users"), {
-        dni,
-        birthDate: birthDate.toISOString(),
-        registrationDate: registrationDate.toISOString(),
-      });
-      // Redirigir a la vista de generación de frases
-      navigate("/random-phrase");
-    } catch (error) {
-      console.error("Error al guardar en Firestore:", error);
-      alert("Hubo un error al guardar tus datos.");
-    }
+    // try {
+    //   // Guardar en Firestore
+    //   await addDoc(collection(db, "users"), {
+    //     dni,
+    //     birthDate: birthDate.toISOString(),
+    //     registrationDate: registrationDate.toISOString(),
+    //   });
+    //   // Redirigir a la vista de generación de frases
+    //   navigate("/random-phrase");
+    // } catch (error) {
+    //   console.error("Error al guardar en Firestore:", error);
+    //   alert("Hubo un error al guardar tus datos.");
+    // }
+
+    navigate("/random-phrase");
   };
 
   const calculateAge = (birthDate) => {
@@ -87,6 +89,8 @@ const MainView = () => {
           value={year}
           onChange={(e) => setYear(e.target.value)}
           required
+          min={1930}
+          max={2006}
         />
       </label>
       <label>

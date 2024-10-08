@@ -1,6 +1,8 @@
 // src/components/RandomPhrase.jsx
 import { useState, useEffect } from "react";
 import { useUser } from "../context/UserContext.jsx";
+import { db } from "../firebase"; // Importar la configuración de Firebase
+import { collection, addDoc } from "firebase/firestore"; // Importar métodos necesarios
 
 const RandomPhrase = () => {
   const phrases = ["frase 1", "frase 2", "frase 3"];
@@ -9,6 +11,7 @@ const RandomPhrase = () => {
   );
   const [isSpinning, setIsSpinning] = useState(false);
   const { userData } = useUser(); // Usamos userData para mantener datos del usuario
+  const { dni, birthDate, registrationDate } = userData;
 
   // Validar si el usuario ya generó una frase en las últimas 24 horas
   useEffect(() => {
@@ -33,7 +36,7 @@ const RandomPhrase = () => {
     setIsSpinning(true);
     setSelectedPhrase("");
 
-    setTimeout(() => {
+    setTimeout(async () => {
       // Generar una frase aleatoria
       const randomIndex = Math.floor(Math.random() * phrases.length);
       const phrase = phrases[randomIndex];
@@ -44,8 +47,20 @@ const RandomPhrase = () => {
       localStorage.setItem("lastGenerated", now.toISOString());
       localStorage.setItem("generatedPhrase", phrase);
 
-      // Redirigir a la vista de la frase generada
-      window.location.href = "/phrase-display";
+      try {
+        // Guardar en Firestore
+        console.log(dni, birthDate, registrationDate);
+        await addDoc(collection(db, "users"), {
+          dni,
+          birthDate,
+          registrationDate,
+        });
+        // Redirigir a la vista de generación de frases
+        window.location.href = "/random-phrase";
+      } catch (error) {
+        console.error("Error al guardar en Firestore:", error);
+        alert("Hubo un error al guardar tus datos.");
+      }
     }, 3000); // Simular el "spin" por 3 segundos
   };
 
