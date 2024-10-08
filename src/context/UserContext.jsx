@@ -8,6 +8,7 @@ export const UserProvider = ({ children }) => {
   const [userData, setUserData] = useState({
     dni: "",
     birthDate: null,
+    registerTime: null, // Añadimos el momento de registro
   });
 
   return (

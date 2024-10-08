@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { useUser } from "../context/UserContext.jsx";
 import { useNavigate } from "react-router-dom";
+import { db } from "../firebase"; // Importar la configuración de Firebase
+import { collection, addDoc } from "firebase/firestore"; // Importar métodos necesarios
 
 const MainView = () => {
   const [day, setDay] = useState("");
@@ -11,7 +13,7 @@ const MainView = () => {
   const { setUserData } = useUser();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const birthDate = new Date(year, month - 1, day);
@@ -23,13 +25,26 @@ const MainView = () => {
     }
 
     // Guardar los datos en el estado global
+    const registrationDate = new Date(); // Fecha actual para el registro
     setUserData({
       dni,
-      birthDate: birthDate.toISOString(),
+      birthDate: birthDate.toLocaleDateString(),
+      registrationDate: registrationDate.toISOString(), // Guardar fecha de registro
     });
 
-    // Redirigir a la vista de generación de frases
-    navigate("/random-phrase");
+    try {
+      // Guardar en Firestore
+      await addDoc(collection(db, "users"), {
+        dni,
+        birthDate: birthDate.toISOString(),
+        registrationDate: registrationDate.toISOString(),
+      });
+      // Redirigir a la vista de generación de frases
+      navigate("/random-phrase");
+    } catch (error) {
+      console.error("Error al guardar en Firestore:", error);
+      alert("Hubo un error al guardar tus datos.");
+    }
   };
 
   const calculateAge = (birthDate) => {
