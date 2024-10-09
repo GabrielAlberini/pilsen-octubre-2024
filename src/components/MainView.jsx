@@ -2,8 +2,7 @@
 import { useState } from "react";
 import { useUser } from "../context/UserContext.jsx";
 import { useNavigate } from "react-router-dom";
-// import { db } from "../firebase"; // Importar la configuración de Firebase
-// import { collection, addDoc } from "firebase/firestore"; // Importar métodos necesarios
+import "../styles/MainView.css";
 
 const MainView = () => {
   const [day, setDay] = useState("");
@@ -32,20 +31,6 @@ const MainView = () => {
       registrationDate: registrationDate.toISOString(), // Guardar fecha de registro
     });
 
-    // try {
-    //   // Guardar en Firestore
-    //   await addDoc(collection(db, "users"), {
-    //     dni,
-    //     birthDate: birthDate.toISOString(),
-    //     registrationDate: registrationDate.toISOString(),
-    //   });
-    //   // Redirigir a la vista de generación de frases
-    //   navigate("/random-phrase");
-    // } catch (error) {
-    //   console.error("Error al guardar en Firestore:", error);
-    //   alert("Hubo un error al guardar tus datos.");
-    // }
-
     navigate("/random-phrase");
   };
 
@@ -63,47 +48,53 @@ const MainView = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Día de nacimiento:
-        <input
-          type="number"
-          value={day}
-          onChange={(e) => setDay(e.target.value)}
-          required
-        />
-      </label>
-      <label>
-        Mes de nacimiento:
-        <input
-          type="number"
-          value={month}
-          onChange={(e) => setMonth(e.target.value)}
-          required
-        />
-      </label>
-      <label>
-        Año de nacimiento:
-        <input
-          type="number"
-          value={year}
-          onChange={(e) => setYear(e.target.value)}
-          required
-          min={1930}
-          max={2006}
-        />
-      </label>
-      <label>
-        DNI:
-        <input
-          type="text"
-          value={dni}
-          onChange={(e) => setDni(e.target.value)}
-          required
-        />
-      </label>
-      <button type="submit">Continuar</button>
-    </form>
+    <section className="home">
+      <h2>
+        FECHA DE <br /> NACIMIENTO:
+      </h2>
+      <form onSubmit={handleSubmit}>
+        <div className="cont-fecha-nacimiento">
+          <input
+            type="number"
+            value={day}
+            onChange={(e) => setDay(e.target.value)}
+            required
+            min={1}
+            max={31}
+            placeholder="Día"
+          />
+          <input
+            type="number"
+            value={month}
+            onChange={(e) => setMonth(e.target.value)}
+            required
+            min={1}
+            max={12}
+            placeholder="Mes"
+          />
+          <input
+            type="number"
+            value={year}
+            onChange={(e) => setYear(e.target.value)}
+            required
+            min={1930}
+            max={2006}
+            placeholder="Año"
+          />
+        </div>
+        <div className="cont-dni">
+          <input
+            type="number"
+            value={dni}
+            onChange={(e) => setDni(e.target.value)}
+            required
+            placeholder="DNI"
+          />
+        </div>
+        <button type="submit">CONTINUAR</button>
+      </form>
+      <img src="./logo.png" alt="Logo de Cerveceria Santa Fe" />
+    </section>
   );
 };
 

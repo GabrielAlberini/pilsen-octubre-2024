@@ -1,76 +1,89 @@
-// src/components/RandomPhrase.jsx
 import { useState, useEffect } from "react";
 import { useUser } from "../context/UserContext.jsx";
-import { db } from "../firebase"; // Importar la configuración de Firebase
-import { collection, addDoc } from "firebase/firestore"; // Importar métodos necesarios
+import { useNavigate } from "react-router-dom";
+import { db } from "../firebase";
+import { collection, addDoc } from "firebase/firestore";
+import "../styles/RandomPhrase.css";
 
 const RandomPhrase = () => {
-  const phrases = ["frase 1", "frase 2", "frase 3"];
-  const [selectedPhrase, setSelectedPhrase] = useState(
-    localStorage.getItem("generatedPhrase") || ""
+  const images = ["./1.png", "./2.png", "./3.png"];
+  const [isGif, setIsGif] = useState(false);
+  const { userData } = useUser();
+  const { dni, birthDate, registrationDate } = userData || {};
+  const navigate = useNavigate();
+  const [lastGenerated, setLastGenerated] = useState(
+    localStorage.getItem("lastGenerated")
   );
-  const [isSpinning, setIsSpinning] = useState(false);
-  const { userData } = useUser(); // Usamos userData para mantener datos del usuario
-  const { dni, birthDate, registrationDate } = userData;
 
-  // Validar si el usuario ya generó una frase en las últimas 24 horas
   useEffect(() => {
-    const lastGenerated = localStorage.getItem("lastGenerated");
-
     if (lastGenerated && Date.now() - new Date(lastGenerated) < 86400000) {
-      window.location.href = "/phrase-display"; // Redirige si ya generó una frase
+      navigate("/phrase-display");
     }
-  }, []);
+  }, [lastGenerated, navigate]);
 
-  // Función para generar una frase aleatoria
-  const generatePhrase = () => {
+  const generateImage = async () => {
     const now = new Date();
-    const lastGenerated = localStorage.getItem("lastGenerated");
-
-    // Si ya generó una frase en las últimas 24 horas, no le permitimos generar una nueva
     if (lastGenerated && now - new Date(lastGenerated) < 86400000) {
-      alert("Debes esperar 24 horas antes de generar otra frase.");
+      alert("Debes esperar 24 horas antes de generar otra imagen.");
       return;
     }
 
-    setIsSpinning(true);
-    setSelectedPhrase("");
-
+    setIsGif(true);
     setTimeout(async () => {
-      // Generar una frase aleatoria
-      const randomIndex = Math.floor(Math.random() * phrases.length);
-      const phrase = phrases[randomIndex];
-      setSelectedPhrase(phrase); // Guardamos en el estado local la frase generada
-      setIsSpinning(false);
-
-      // Guardar la fecha y la frase en localStorage
+      const randomIndex = Math.floor(Math.random() * images.length);
+      const selectedImage = images[randomIndex];
+      localStorage.setItem("generatedImage", selectedImage);
       localStorage.setItem("lastGenerated", now.toISOString());
-      localStorage.setItem("generatedPhrase", phrase);
+      setLastGenerated(now.toISOString());
+      setIsGif(false);
 
-      try {
-        // Guardar en Firestore
-        console.log(dni, birthDate, registrationDate);
-        await addDoc(collection(db, "users"), {
-          dni,
-          birthDate,
-          registrationDate,
-        });
-        // Redirigir a la vista de generación de frases
-        window.location.href = "/random-phrase";
-      } catch (error) {
-        console.error("Error al guardar en Firestore:", error);
-        alert("Hubo un error al guardar tus datos.");
+      if (userData) {
+        try {
+          await addDoc(collection(db, "users"), {
+            dni,
+            birthDate,
+            registrationDate,
+          });
+          navigate("/phrase-display");
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        alert("No se encontraron datos de usuario.");
       }
-    }, 3000); // Simular el "spin" por 3 segundos
+    }, 3000);
   };
 
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    let interval;
+    if (isGif) {
+      interval = setInterval(() => {
+        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+      }, 150);
+    }
+    return () => clearInterval(interval);
+  }, [isGif, images.length]);
+
   return (
-    <div>
-      <h2>Bienvenido, {userData?.dni}</h2> {/* Mostramos datos del usuario */}
-      <button onClick={generatePhrase}>Generar frase aleatoria</button>
-      {isSpinning && <p>Girando...</p>}
-      {!isSpinning && selectedPhrase && <h1>{selectedPhrase}</h1>}
-    </div>
+    <section className="gif">
+      {isGif && (
+        <div className="cont-gif">
+          <img
+            src={images[currentImageIndex]}
+            alt={`Animación ${currentImageIndex + 1}`}
+            style={{ width: "100%", height: "auto" }}
+          />
+        </div>
+      )}
+      <div className="cont-content">
+        {!isGif && (
+          <button onClick={generateImage}>¡GENERAR LETRA ALEATORIA!</button>
+        )}
+        <img src="./logo.png" alt="Logo de la Cerveceria Santa Fe" />
+      </div>
+    </section>
   );
 };
 

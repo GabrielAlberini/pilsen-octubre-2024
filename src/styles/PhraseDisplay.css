@@ -1,0 +1,17 @@
+.frase {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-image: url("./pattern.png");
+  background-size: cover;
+}
+
+.frase img:last-child {
+  width: 150px;
+}
+
+.frase img:first-child {
+  width: 320px;
+}
