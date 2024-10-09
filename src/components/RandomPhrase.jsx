@@ -79,7 +79,7 @@ const RandomPhrase = () => {
       )}
       <div className="cont-content">
         {!isGif && (
-          <button onClick={generateImage}>¡GENERAR LETRA ALEATORIA!</button>
+          <button onClick={generateImage}>¡GIRAR!</button>
         )}
         <img src="./logo.png" alt="Logo de la Cerveceria Santa Fe" />
       </div>
