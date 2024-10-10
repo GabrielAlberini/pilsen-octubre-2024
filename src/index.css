@@ -1,10 +1,10 @@
 @font-face {
   font-family: "Tungsten-Bold";
-  src: url("./Tungsten-Bold.ttf") format("truetype");
+  src: url("/Tungsten-Bold.ttf") format("truetype");
 }
 @font-face {
   font-family: "Tungsten-Semibold";
-  src: url("./Tungsten-Semibold.ttf") format("truetype");
+  src: url("/Tungsten-Semibold.ttf") format("truetype");
 }
 
 * {

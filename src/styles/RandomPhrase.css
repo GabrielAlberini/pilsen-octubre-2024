@@ -5,7 +5,7 @@
   gap: 30px;
   align-items: center;
   flex-direction: column;
-  background-image: url("./pattern.png");
+  background-image: url("/pattern.png");
   background-size: cover;
 }
 
