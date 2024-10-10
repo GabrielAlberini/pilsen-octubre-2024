@@ -54,33 +54,20 @@ const RandomPhrase = () => {
     }, 3000);
   };
 
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  useEffect(() => {
-    let interval;
-    if (isGif) {
-      interval = setInterval(() => {
-        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-      }, 150);
-    }
-    return () => clearInterval(interval);
-  }, [isGif, images.length]);
-
   return (
     <section className="gif">
       {isGif && (
         <div className="cont-gif">
+          {/* Reemplazar las imágenes aleatorias por el GIF */}
           <img
-            src={images[currentImageIndex]}
-            alt={`Animación ${currentImageIndex + 1}`}
+            src="./frases.gif"
+            alt="GIF animado"
             style={{ width: "100%", height: "auto" }}
           />
         </div>
       )}
       <div className="cont-content">
-        {!isGif && (
-          <button onClick={generateImage}>¡GIRAR!</button>
-        )}
+        {!isGif && <button onClick={generateImage}>¡GIRAR!</button>}
         <img src="./logo.png" alt="Logo de la Cerveceria Santa Fe" />
       </div>
     </section>
