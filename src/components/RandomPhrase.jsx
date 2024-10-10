@@ -17,14 +17,14 @@ const RandomPhrase = () => {
 
   useEffect(() => {
     if (lastGenerated && Date.now() - new Date(lastGenerated) < 86400000) {
-      navigate("/phrase-display");
+      navigate("/frase-seleccionada");
     }
   }, [lastGenerated, navigate]);
 
   const generateImage = async () => {
     const now = new Date();
-    if (lastGenerated && now - new Date(lastGenerated) < 86400000) {
-      alert("Debes esperar 24 horas antes de generar otra imagen.");
+    if (lastGenerated && now - new Date(lastGenerated) < 28800000) {
+      alert("Debes esperar 8 horas antes de generar otra imagen.");
       return;
     }
 
@@ -35,7 +35,6 @@ const RandomPhrase = () => {
       localStorage.setItem("generatedImage", selectedImage);
       localStorage.setItem("lastGenerated", now.toISOString());
       setLastGenerated(now.toISOString());
-      setIsGif(false);
 
       if (userData) {
         try {
@@ -44,7 +43,8 @@ const RandomPhrase = () => {
             birthDate,
             registrationDate,
           });
-          navigate("/phrase-display");
+          setIsGif(false);
+          navigate("/frase-seleccionada");
         } catch (error) {
           console.log(error);
         }

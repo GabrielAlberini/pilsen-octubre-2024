@@ -31,7 +31,7 @@ const MainView = () => {
       registrationDate: registrationDate.toISOString(), // Guardar fecha de registro
     });
 
-    navigate("/random-phrase");
+    navigate("/frase-random");
   };
 
   const calculateAge = (birthDate) => {

@@ -27,14 +27,14 @@ const App = () => {
         <Routes>
           {lastGenerated ? (
             <>
-              <Route path="/phrase-display" element={<PhraseDisplay />} />
-              <Route path="*" element={<Navigate to="/phrase-display" />} />
+              <Route path="/frase-seleccionada" element={<PhraseDisplay />} />
+              <Route path="*" element={<Navigate to="/frase-seleccionada" />} />
             </>
           ) : (
             <>
               <Route path="/" element={<MainView />} />
-              <Route path="/random-phrase" element={<RandomPhrase />} />
-              <Route path="/phrase-display" element={<PhraseDisplay />} />
+              <Route path="/frase-random" element={<RandomPhrase />} />
+              <Route path="/frase-seleccionada" element={<PhraseDisplay />} />
             </>
           )}
         </Routes>
