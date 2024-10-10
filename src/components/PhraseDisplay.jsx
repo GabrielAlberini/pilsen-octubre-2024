@@ -8,24 +8,24 @@ const PhraseDisplay = () => {
   const [image, setImage] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const lastGenerated = getItem("lastGenerated");
-    const generatedImage = getItem("generatedImage");
+  // useEffect(() => {
+  //   const lastGenerated = getItem("lastGenerated");
+  //   const generatedImage = getItem("generatedImage");
 
-    // Verificar si han pasado más de 24 horas
-    if (!lastGenerated || Date.now() - new Date(lastGenerated) >= 86400000) {
-      // Limpiar localStorage y redirigir
-      removeItem("lastGenerated");
-      removeItem("generatedImage");
-      navigate("/");
-    } else {
-      setImage(generatedImage);
-    }
-  }, [navigate]);
+  //   // Verificar si han pasado más de 24 horas
+  //   if (!lastGenerated || Date.now() - new Date(lastGenerated) >= 86400000) {
+  //     // Limpiar localStorage y redirigir
+  //     removeItem("lastGenerated");
+  //     removeItem("generatedImage");
+  //     navigate("/");
+  //   } else {
+  //     setImage(generatedImage);
+  //   }
+  // }, [navigate]);
 
   return (
     <section className="frase">
-      {image && <img src={image} alt="Imagen generada" />}
+      <img src="./1.png" alt="Imagen generada" />
       <img src="./logo.png" alt="Logo de la Cerveceria Santa Fe" />
     </section>
   );

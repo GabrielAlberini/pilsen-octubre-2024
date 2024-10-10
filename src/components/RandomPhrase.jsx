@@ -39,11 +39,11 @@ const RandomPhrase = () => {
 
       if (userData) {
         try {
-          await addDoc(collection(db, "users"), {
-            dni,
-            birthDate,
-            registrationDate,
-          });
+          // await addDoc(collection(db, "users"), {
+          //   dni,
+          //   birthDate,
+          //   registrationDate,
+          // });
           setIsGif(false);
           navigate("/frase-seleccionada");
         } catch (error) {
