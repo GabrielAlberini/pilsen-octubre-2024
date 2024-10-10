@@ -10,7 +10,6 @@ import MainView from "./components/MainView.jsx";
 import RandomPhrase from "./components/RandomPhrase.jsx";
 import PhraseDisplay from "./components/PhraseDisplay.jsx";
 import { useEffect, useState } from "react";
-import "./App.css";
 
 const App = () => {
   const [lastGenerated, setLastGenerated] = useState(null);
