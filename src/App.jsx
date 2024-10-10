@@ -11,13 +11,9 @@ import RandomPhrase from "./components/RandomPhrase.jsx";
 import PhraseDisplay from "./components/PhraseDisplay.jsx";
 import { useEffect, useState } from "react";
 import { getItem } from "./utils/localStorage";
-import { removeItem } from "../utils/localStorage.js";
 
 const App = () => {
   const [lastGenerated, setLastGenerated] = useState(null);
-
-  removeItem("lastGenerated");
-  removeItem("generatedImage");
 
   useEffect(() => {
     const savedLastGenerated = getItem("lastGenerated");
