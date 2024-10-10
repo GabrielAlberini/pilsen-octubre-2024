@@ -51,7 +51,7 @@ const RandomPhrase = () => {
       } else {
         alert("No se encontraron datos de usuario.");
       }
-    }, 3000);
+    }, 5000);
   };
 
   return (
