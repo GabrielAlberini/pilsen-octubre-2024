@@ -1,8 +1,10 @@
+// src/components/RandomPhrase.jsx
 import { useState, useEffect } from "react";
 import { useUser } from "../context/UserContext.jsx";
 import { useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import { collection, addDoc } from "firebase/firestore";
+import { getItem, setItem } from "../utils/localStorage";
 import "../styles/RandomPhrase.css";
 
 const RandomPhrase = () => {
@@ -11,12 +13,11 @@ const RandomPhrase = () => {
   const { userData } = useUser();
   const { dni, birthDate, registrationDate } = userData || {};
   const navigate = useNavigate();
-  const [lastGenerated, setLastGenerated] = useState(
-    localStorage.getItem("lastGenerated")
-  );
+  const [lastGenerated, setLastGenerated] = useState(getItem("lastGenerated"));
 
   useEffect(() => {
-    if (lastGenerated && Date.now() - new Date(lastGenerated) < 86400000) {
+    const now = Date.now();
+    if (lastGenerated && now - new Date(lastGenerated) < 86400000) {
       navigate("/frase-seleccionada");
     }
   }, [lastGenerated, navigate]);
@@ -32,8 +33,8 @@ const RandomPhrase = () => {
     setTimeout(async () => {
       const randomIndex = Math.floor(Math.random() * images.length);
       const selectedImage = images[randomIndex];
-      localStorage.setItem("generatedImage", selectedImage);
-      localStorage.setItem("lastGenerated", now.toISOString());
+      setItem("generatedImage", selectedImage);
+      setItem("lastGenerated", now.toISOString());
       setLastGenerated(now.toISOString());
 
       if (userData) {
@@ -58,7 +59,6 @@ const RandomPhrase = () => {
     <section className="gif">
       {isGif && (
         <div className="cont-gif">
-          {/* Reemplazar las imágenes aleatorias por el GIF */}
           <img
             src="./frases.gif"
             alt="GIF animado"

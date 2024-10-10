@@ -1,5 +1,7 @@
+// src/components/PhraseDisplay.jsx
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getItem, removeItem } from "../utils/localStorage";
 import "../styles/PhraseDisplay.css";
 
 const PhraseDisplay = () => {
@@ -7,14 +9,14 @@ const PhraseDisplay = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const lastGenerated = localStorage.getItem("lastGenerated");
-    const generatedImage = localStorage.getItem("generatedImage");
+    const lastGenerated = getItem("lastGenerated");
+    const generatedImage = getItem("generatedImage");
 
     // Verificar si han pasado más de 24 horas
     if (!lastGenerated || Date.now() - new Date(lastGenerated) >= 86400000) {
       // Limpiar localStorage y redirigir
-      localStorage.removeItem("lastGenerated");
-      localStorage.removeItem("generatedImage");
+      removeItem("lastGenerated");
+      removeItem("generatedImage");
       navigate("/");
     } else {
       setImage(generatedImage);
