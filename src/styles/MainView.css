@@ -17,17 +17,6 @@
   z-index: 1;
 }
 
-.home::before {
-  content: "";
-  position: absolute;
-  width: 1px;
-  height: 100%;
-  background-color: #b4881a;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 0;
-}
-
 h2 {
   text-align: center;
   color: #ff0000;
