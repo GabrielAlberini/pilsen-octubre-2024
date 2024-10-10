@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useUser } from "../context/UserContext.jsx";
 import { useNavigate } from "react-router-dom";
 import "../styles/MainView.css";
+import { removeItem } from "../utils/localStorage.js";
 
 const MainView = () => {
   const [day, setDay] = useState("");
