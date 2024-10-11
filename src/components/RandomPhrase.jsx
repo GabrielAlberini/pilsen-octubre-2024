@@ -13,37 +13,37 @@ const RandomPhrase = () => {
   const { userData } = useUser();
   const { dni, birthDate, registrationDate } = userData || {};
   const navigate = useNavigate();
-  // const [lastGenerated, setLastGenerated] = useState(getItem("lastGenerated"));
+  const [lastGenerated, setLastGenerated] = useState(getItem("lastGenerated"));
 
-  // useEffect(() => {
-  //   const now = Date.now();
-  //   if (lastGenerated && now - new Date(lastGenerated) < 86400000) {
-  //     navigate("/frase-seleccionada");
-  //   }
-  // }, [lastGenerated, navigate]);
+  useEffect(() => {
+    const now = Date.now();
+    if (lastGenerated && now - new Date(lastGenerated) < 86400000) {
+      navigate("/frase-seleccionada");
+    }
+  }, [lastGenerated, navigate]);
 
   const generateImage = async () => {
-    // const now = new Date();
-    // if (lastGenerated && now - new Date(lastGenerated) < 28800000) {
-    //   alert("Debes esperar 8 horas antes de generar otra imagen.");
-    //   return;
-    // }
+    const now = new Date();
+    if (lastGenerated && now - new Date(lastGenerated) < 28800000) {
+      alert("Debes esperar 8 horas antes de generar otra imagen.");
+      return;
+    }
 
     setIsGif(true);
     setTimeout(async () => {
       const randomIndex = Math.floor(Math.random() * images.length);
       const selectedImage = images[randomIndex];
       setItem("generatedImage", selectedImage);
-      // setItem("lastGenerated", now.toISOString());
-      // setLastGenerated(now.toISOString());
+      setItem("lastGenerated", now.toISOString());
+      setLastGenerated(now.toISOString());
 
       if (userData) {
         try {
-          // await addDoc(collection(db, "users"), {
-          //   dni,
-          //   birthDate,
-          //   registrationDate,
-          // });
+          await addDoc(collection(db, "users"), {
+            dni,
+            birthDate,
+            registrationDate,
+          });
           setIsGif(false);
           navigate("/frase-seleccionada");
         } catch (error) {
